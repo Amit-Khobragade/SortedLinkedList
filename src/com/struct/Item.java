@@ -1,6 +1,6 @@
 package com.struct;
 
-public class Item {
+public class Item implements Comparisons<Item>{
 	///////////////////////////////////////////////////////
 	////////////// saves the object from gc ///////////////
 	///////////////////////////////////////////////////////
@@ -23,6 +23,7 @@ public class Item {
 	///////////////////////////////////////////////////////
 	/////////////////////// methods ///////////////////////
 	///////////////////////////////////////////////////////
+	@Override
 	public int compareTo( Item i ) {
 		if( this.sNo == i.sNo )
 			return 0;
@@ -48,6 +49,7 @@ public class Item {
 		return this.amount;
 	}
 	
+	@Override
 	public void print() {
 		System.out.println( "................." );
 		System.out.println( "S.No.::\t" + this.sNo );
