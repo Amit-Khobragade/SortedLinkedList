@@ -1,13 +1,13 @@
 package com.struct;
 
-public class SortedLinkedList extends ItemList  {
+public class SortedLinkedList<T extends Comparisons<T> > extends ItemList<T>  {
 
 	///////////////////////////////////////////////////////
 	/////////////////// constructor ///////////////////////
 	///////////////////////////////////////////////////////
 	public SortedLinkedList(){
-		super.start = new Node();
-		super.end = new Node();
+		super.start = new Node<T>();
+		super.end = new Node<T>();
 		super.current = super.start;
 		super.start.setNext(super.end);
 		super.end.setPrevious(super.start);
@@ -18,8 +18,8 @@ public class SortedLinkedList extends ItemList  {
 	///////////////////// Overridden ///////////////////////
 	///////////////////////////////////////////////////////
 	@Override
-	public void add( Item it) {
-		Node temp1;
+	public void add( T it) {
+		Node<T> temp1;
 		for( temp1 = super.start; temp1.getNext() != super.end && this.size != 0; temp1 = temp1.getNext() ) {
 			if( temp1.getNext().getItem().compareTo(it) <= 0 )
 				break;
@@ -28,12 +28,12 @@ public class SortedLinkedList extends ItemList  {
 	}
 	
 	@Override
-	public Item remove() {
+	public T remove() {
 		if( size == 0 ) {
 			System.out.println( "UnderFlow" );
 			return null;
 		}
-		Node temp1 = super.current;
+		Node<T> temp1 = super.current;
 		if( temp1 == super.start )
 			temp1 = super.start.getNext();
 		else if( temp1 == super.end ) 
@@ -42,18 +42,18 @@ public class SortedLinkedList extends ItemList  {
 		if( super.current != super.start || super.current != super.end )
 			next();
 		
-		Item item = temp1.getItem();
+		T item = temp1.getItem();
 		this.removeAtNode(temp1);
 		return item;
 	}
 	@Override
-	public Item get( int pos ) {
+	public T get( int pos ) {
 		pos--;
-		Node temp = findNode(pos);
+		Node<T> temp = findNode(pos);
 		return temp.getItem();
 	}
 	
-	public Item get() {
+	public T get() {
 		if( super.current == super.start || super.current == super.end ) {
 			return null;
 		}
@@ -66,7 +66,7 @@ public class SortedLinkedList extends ItemList  {
 	///////////////////////////////////////////////////////
 	public void printAll() {
 		int j = 1;
-		for( Node i = super.start.getNext(); i != super.end; i = i.getNext() ) {
+		for( Node<T> i = super.start.getNext(); i != super.end; i = i.getNext() ) {
 			System.out.println( j++ + "  ::" );
 			i.getItem().print();
 		}
@@ -111,12 +111,12 @@ public class SortedLinkedList extends ItemList  {
 	///////////////////////////////////////////////////////
 	//////////////// method to find pos ///////////////////
 	///////////////////////////////////////////////////////
-	private Node findNode( int pos ) {
+	private Node<T> findNode( int pos ) {
 		if( pos < 0 || pos > this.size ) {
 			System.out.println( "Error:: Invalid pos...");
 			return null;
 		}
-		Node temp ;
+		Node<T> temp ;
 		if( pos == 0 )
 			temp = super.start.getNext();
 		else if( pos == this.size )
@@ -139,10 +139,10 @@ public class SortedLinkedList extends ItemList  {
 	///////////////////////////////////////////////////////
 	////////////// methods to add new items ///////////////
 	///////////////////////////////////////////////////////
-	private void addAtNode( Item it, Node node ) {
+	private void addAtNode( T it, Node<T> node ) {
 		if( node == super.end )
 			node = node.getPrevious();
-		Node temp = new Node( node, node.getNext(), it );
+		Node<T> temp = new Node<>( node, node.getNext(), it );
 		node.getNext().setPrevious(temp);
 		node.setNext(temp);
 		++size;
@@ -153,7 +153,7 @@ public class SortedLinkedList extends ItemList  {
 	///////////////////////////////////////////////////////
 	////////////// methods to remove items ////////////////
 	///////////////////////////////////////////////////////
-	private void removeAtNode( Node node) {
+	private void removeAtNode( Node<T> node) {
 		node.getPrevious().setNext(node.getNext());
 		node.getNext().setPrevious(node.getPrevious());
 		--size;
@@ -163,16 +163,16 @@ public class SortedLinkedList extends ItemList  {
 	//////////// redundant functions could be /////////////  
 	//////////// used in other implementations ////////////
 	///////////////////////////////////////////////////////
-	private void addToPos( Item it, int pos ) {
-		Node temp = this.findNode(pos);
+	private void addToPos( T it, int pos ) {
+		Node<T> temp = this.findNode(pos);
 		if( temp == null )
 			return;
 		addAtNode( it, temp );
 	}
 	
 	
-	private Item removeFromPos( int pos ) {
-		Node temp = this.findNode(pos);
+	private T removeFromPos( int pos ) {
+		Node<T> temp = this.findNode(pos);
 		if( temp == null )
 			return null;
 		removeAtNode( temp );
